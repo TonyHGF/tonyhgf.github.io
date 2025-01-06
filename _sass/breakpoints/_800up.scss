@@ -59,7 +59,7 @@ HEADER STYLING
 ***************/
 
 .header {
-	height: 15em;
+	height: 20em;
 	position: relative;
 	padding-bottom: 2em;
 
@@ -68,7 +68,7 @@ HEADER STYLING
 		top: 50%;
 		transform: translateY(-50%);
 		max-width: 800px;
-		overflow: hidden;
+		// overflow: hidden;
 	}
 
 	h1 {
