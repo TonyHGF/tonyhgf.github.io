@@ -22,3 +22,4 @@ title: About Gangfeng Hu
   	</ul> -->
 </div>
 
+>  Contact me: hugf2022@shanghaitech.edu or hugf0905@gmail.com
