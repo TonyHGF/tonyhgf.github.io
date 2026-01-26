@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 300px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.filter-section label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Details Box Styling */
+.details-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 200px;
+}
+
+.details-title { font-size: 1.1em; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
+.details-meta { font-size: 0.85em; color: #666; margin-bottom: 10px; }
+.details-abstract { font-size: 0.9em; line-height: 1.4; }
+
+/* Chart Styling */
+.main-content {
+    flex-grow: 1;
+    position: relative;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
