@@ -7,58 +7,94 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript">
-        var password = "tonyhu123"; // Set your password here
+        var password = "123456"; // 这里修改为你想要的密码
         function checkPassword() {
             var enteredPassword = prompt("Please enter the password:");
             if (enteredPassword === password) {
                 alert("Access granted!");
-                document.getElementById("protected-content").style.display = "block"; // Show the protected content
+                document.getElementById("protected-content").style.display = "block"; // 显示保护内容
             } else {
                 alert("Access denied!");
-                window.location.href = "https://www.example.com"; // Redirect to another page if password is wrong
+                window.location.href = "https://www.example.com"; // 密码错误时重定向
             }
         }
     </script>
+    <style>
+        /* 确保密码保护内容不会影响页面的布局 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        /* 隐藏protected-content，直到密码输入正确 */
+        #protected-content {
+            display: none;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 250px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            margin-left: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body onload="checkPassword()">
 
-    <div class="container" id="protected-content" style="display:none;">
-        <div class="sidebar">
-            <h2>MICCAI Explorer</h2>
-            
-            <div class="control-section">
-                <h3>Color By</h3>
-                <select id="sel-assignment">
+    <div id="protected-content">
+        <div class="container">
+            <div class="sidebar">
+                <h2>MICCAI Explorer</h2>
+                
+                <div class="control-section">
+                    <h3>Color By</h3>
+                    <select id="sel-assignment">
                     </select>
-                <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
+                    <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
+                </div>
+                <hr>
+
+                <div class="filter-section">
+                    <h3>Filters</h3>
+                    <!-- <label>Year:</label>
+                    <select id="sel-year"><option value="all">All Years</option></select> -->
+                    <label>Year (e.g. 2015-2018, 2020):</label>
+                    <input type="text" id="sel-year" placeholder="All Years">
+                    <label>Country:</label>
+                    <select id="sel-country"><option value="all">All Countries</option></select>
+                    
+                    <label>Institution:</label>
+                    <select id="sel-inst"><option value="all">All Institutions</option></select>
+                    
+                    <button id="btn-reset">Reset Filters</button>
+                </div>
+
+                <hr>
+
+                <div class="details-section" id="details-box">
+                    <h3>Paper Details</h3>
+                    <p class="placeholder">Hover over a point to see details...</p>
+                </div>
             </div>
-            <hr>
 
-            <div class="filter-section">
-                <h3>Filters</h3>
-                <!-- <label>Year:</label>
-                <select id="sel-year"><option value="all">All Years</option></select> -->
-                <label>Year (e.g. 2015-2018, 2020):</label>
-                <input type="text" id="sel-year" placeholder="All Years">
-                <label>Country:</label>
-                <select id="sel-country"><option value="all">All Countries</option></select>
-                
-                <label>Institution:</label>
-                <select id="sel-inst"><option value="all">All Institutions</option></select>
-                
-                <button id="btn-reset">Reset Filters</button>
+            <div class="main-content">
+                <div id="chart"></div>
             </div>
-
-            <hr>
-
-            <div class="details-section" id="details-box">
-                <h3>Paper Details</h3>
-                <p class="placeholder">Hover over a point to see details...</p>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div id="chart"></div>
         </div>
     </div>
 
