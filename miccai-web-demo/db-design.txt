@@ -1,0 +1,86 @@
+帮我修改我的网页规划，使之能够适应新的数据存储模式。在之前，我是把信息都存在了miccai_papers.json，但是为了扩展可视化，现在我把信息分别存在了papers.json，assignments.json和colors.json。
+
+papers.json存储了每篇文章的信息，样例如下：
+  "2001_0001": {
+    "paper_id": "2001_0001",
+    "title": "A Method for Tracking the Camera Motion of Real Endoscope by Epipolar Geometry Analysis and Virtual Endoscopy System",
+    "abstract": "This paper describes...",
+    "labels": {
+      "category": [
+        "CAI"
+      ],
+      "task": [
+        "Registration",
+        "Surgical Planning & Navigation"
+      ],
+      "method": [
+        "Navigation, Tracking & Calibration",
+        "Atlas & Registration Optimization",
+        "Augmented & Virtual Reality (AR/VR)"
+      ],
+      "modality": [
+        "Multi-Modal"
+      ],
+      "organ": [
+        "Gastrointestinal Tract (Stomach, Colon, Rectum)"
+      ]
+    },
+    "institution": "Stanford University",
+    "country": "USA",
+    "link": "https://link.springer.com/chapter/10.1007/3-540-45468-3_1",
+    "x": 0.79196,
+    "y": 0.69258,
+    "year": 2001,
+    "authors": [
+      "Mori, Kensaku",
+      "Deguchi, Daisuke",
+      "Hasegawa, Jun-ichi",
+      "Suenaga, Yasuhito",
+      "Toriwaki, Jun-ichiro",
+      "Takabatake, Hirotsugu",
+      "Natori, Hiroshi"
+    ],
+    "id": "2001_0001"
+  },
+
+assignments.json 存储不同labeling方法下，每篇文章属于哪一类，比如说这样：
+ "group_by_year": {
+    "id": "group_by_year",
+    "name": "Publication Year",
+    "description": "Grouping papers based on their publication year.",
+    "map": {
+      "2001_0001": "2001",
+      "2001_0002": "2001",
+      "2001_0003": "2001",
+      "2001_0004": "2001",
+      "2001_0005": "2001",
+...
+
+colors.json是根据assignments.json，定义每种类别的颜色，比如：
+  "group_by_year": {
+    "2001": "#440154",
+    "2002": "#471063",
+    "2003": "#481f70",
+    "2004": "#472d7b",
+    "2005": "#443983",
+    "2006": "#404688",
+    "2007": "#3b528b",
+    "2008": "#365d8d",
+    "2009": "#31688e",
+    "2010": "#2c728e",
+    "2011": "#287c8e",
+    "2012": "#24868e",
+    "2013": "#21918c",
+    "2014": "#1f9a8a",
+    "2015": "#20a486",
+    "2016": "#28ae80",
+    "2017": "#35b779",
+    "2018": "#48c16e",
+    "2019": "#5ec962",
+    "2020": "#75d054",
+    "2021": "#90d743",
+    "2022": "#addc30",
+    "2023": "#c8e020",
+    "2024": "#e5e419",
+    "2025": "#fde725"
+  }

@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* [CHANGED] Use min-height instead of fixed height so the page can grow */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    
+    /* [CHANGED] Height is auto to allow expanding with content */
+    height: auto; 
+    min-height: 100vh;
+    width: 100%;
+    
+    /* [IMPORTANT] 'flex-start' is required for the sticky chart to work 
+       correctly. It prevents the chart div from stretching to the full 
+       height of the sidebar. */
+    align-items: flex-start;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 300px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: auto; 
+}
+
+/* --- 新增/修改的部分开始 --- */
+
+/* 让控制区（Color By）和筛选区（Filters）的标题标签样式保持一致 */
+.control-section label,
+.filter-section label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #333; /* 稍微加深一点颜色，更易读 */
+}
+
+/* 给 Color By 区域底部增加一点间距，别离下面的分割线太近 */
+.control-section {
+    margin-bottom: 15px;
+}
+
+/* 找到你 style.css 里的 select 部分，用这个替换 */
+
+select, 
+input[type="text"] {
+    /* 1. 布局控制 */
+    width: 100%;           /* 大家都占满一行 */
+    padding: 5px;          /* 内边距统一 */
+    margin-top: 5px;       /* 顶部间距统一 */
+    
+    /* 2. 视觉风格 (让 Country 下拉框也变得好看) */
+    border: 1px solid #ccc; /* 统一灰色细边框，去掉浏览器默认的丑立体边框 */
+    border-radius: 4px;     /* 统一加一点圆角 */
+    
+    /* 3. 关键修正 */
+    box-sizing: border-box; /* 这一行最重要！确保加上 padding 后，宽度不会超过 100% */
+    font-family: inherit;   /* 字体统一 */
+    font-size: 14px;        /* 字号统一 */
+}
+
+/* 这是一个可选的优化：当你点击输入框时，边框变蓝 */
+select:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* --- 新增/修改的部分结束 --- */
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+    background-color: #e9ecef; /* 建议给按钮加个背景色 */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #dde2e6;
+}
+
+/* Details Box Styling */
+.details-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    
+    /* This ensures it looks like a box even if empty */
+    min-height: 200px; 
+}
+
+.details-title { font-size: 1.1em; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
+.details-meta { font-size: 0.85em; color: #666; margin-bottom: 10px; }
+.details-abstract { font-size: 0.9em; line-height: 1.4; }
+
+/* Chart Styling */
+.main-content {
+    flex-grow: 1;
+    position: relative;
+    
+    /* [CHANGED] Sticky Positioning:
+       This keeps the map locked to the screen while you scroll down 
+       to read the long sidebar content. */
+    height: 100vh;
+    position: sticky; 
+    top: 0;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* --- Labels / Tags Styling --- */
+.label-section {
+    margin: 10px 0;
+    padding: 10px 0;
+    border-top: 1px dashed #eee;
+    border-bottom: 1px dashed #eee;
+}
+
+.label-row {
+    margin-bottom: 6px;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.label-key {
+    font-weight: bold;
+    color: #555;
+    margin-right: 5px;
+    display: inline-block;
+    min-width: 60px; /* 让冒号对齐，看起来更整齐 */
+}
+
+.label-tag {
+    display: inline-block;
+    background-color: #f1f3f5; /* 浅灰色背景 */
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 4px; /* 圆角 */
+    font-size: 0.9em;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    border: 1px solid #dee2e6;
+}

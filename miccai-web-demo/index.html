@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MICCAI Knowledge Discovery</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        var password = "your_password"; // Set your password here
+        function checkPassword() {
+            var enteredPassword = prompt("Please enter the password:");
+            if (enteredPassword === password) {
+                alert("Access granted!");
+                document.getElementById("protected-content").style.display = "block"; // Show the protected content
+            } else {
+                alert("Access denied!");
+                window.location.href = "https://www.example.com"; // Redirect to another page if password is wrong
+            }
+        }
+    </script>
+</head>
+<body onload="checkPassword()">
+
+    <div class="container" id="protected-content" style="display:none;">
+        <div class="sidebar">
+            <h2>MICCAI Explorer</h2>
+            
+            <div class="control-section">
+                <h3>Color By</h3>
+                <select id="sel-assignment">
+                    </select>
+                <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
+            </div>
+            <hr>
+
+            <div class="filter-section">
+                <h3>Filters</h3>
+                <!-- <label>Year:</label>
+                <select id="sel-year"><option value="all">All Years</option></select> -->
+                <label>Year (e.g. 2015-2018, 2020):</label>
+                <input type="text" id="sel-year" placeholder="All Years">
+                <label>Country:</label>
+                <select id="sel-country"><option value="all">All Countries</option></select>
+                
+                <label>Institution:</label>
+                <select id="sel-inst"><option value="all">All Institutions</option></select>
+                
+                <button id="btn-reset">Reset Filters</button>
+            </div>
+
+            <hr>
+
+            <div class="details-section" id="details-box">
+                <h3>Paper Details</h3>
+                <p class="placeholder">Hover over a point to see details...</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div id="chart"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
