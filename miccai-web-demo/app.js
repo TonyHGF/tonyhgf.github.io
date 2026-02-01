@@ -5,6 +5,8 @@ let rawColors = {};       // Content of colors.json
 let plotData = [];        // Array version of papers for Plotly
 let lockedIndex = null; // [NEW] 用来存储当前锁定的文章索引，null 代表没锁定
 
+const LABEL_KEYS = ['category', 'task', 'method', 'modality', 'organ'];
+
 document.addEventListener('DOMContentLoaded', () => {
     const timestamp = new Date().getTime(); // Prevent caching during dev
 
@@ -217,43 +219,66 @@ function drawChart(data) {
 // --- FILTER LOGIC (Updated to preserve colors) ---
 
 function initFilters() {
-    // 1. 设置 Year 输入框的提示语 (Placeholder)
-    // 只有当数据加载成功且有年份时才执行
+    // ... (保留你原有的 Year 占位符逻辑) ...
     const years = plotData.map(d => d.year).filter(y => y);
     const yearInput = document.getElementById('sel-year');
-    
     if (yearInput && years.length > 0) {
         const minYear = Math.min(...years);
         const maxYear = Math.max(...years);
         yearInput.placeholder = `e.g. ${minYear}-${minYear+3}, ${maxYear}`;
     }
 
-    // 2. 准备 Country 和 Institution 的数据
+    // ... (保留 Country/Institution 数据准备逻辑) ...
     const countries = [...new Set(plotData.map(d => d.country))].sort();
     const insts = [...new Set(plotData.map(d => d.institution))].sort();
 
-    // 3. 填充下拉菜单
-    // ⚠️ 注意：这里千万不要再写 populateSelect('sel-year', ...); 了！
     populateSelect('sel-country', countries);
     populateSelect('sel-inst', insts);
 
-    // 4. 绑定事件监听
-    // 给所有下拉菜单绑定
+    // --- [NEW] 初始化 Label Type 下拉菜单 ---
+    // 首字母大写处理
+    const formatLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const typeSelect = document.getElementById('sel-label-type');
+    
+    // 清空现有选项 (除了第一个 default)
+    // 注意：populateSelect 会自动加 "All"，但这里我们需要自定义显示的 Text
+    LABEL_KEYS.forEach(key => {
+        const opt = document.createElement('option');
+        opt.value = key; // value 是 "task"
+        opt.textContent = formatLabel(key); // text 是 "Task"
+        typeSelect.appendChild(opt);
+    });
+
+    // 绑定 Label Type 的联动事件
+    typeSelect.addEventListener('change', () => {
+        const selectedType = typeSelect.value;
+        updateLabelValueOptions(selectedType); // 下面会定义这个函数
+        applyFilters(); // 触发一次过滤（重置 Tag）
+    });
+
+    // 绑定 Label Value 的过滤事件
+    document.getElementById('sel-label-value').addEventListener('change', applyFilters);
+
+    // ... (保留原有的事件绑定) ...
     document.querySelectorAll('select').forEach(sel => {
+        // 注意：防止重复绑定，上面已经单独绑了 label 相关的，这里其实可以保留，
+        // 但为了逻辑清晰，建议保留原样，多绑一次也不会报错。
         sel.addEventListener('change', applyFilters);
     });
 
-    // 单独给 Year 输入框绑定 (因为它不是 select)
-    if (yearInput) {
-        yearInput.addEventListener('change', applyFilters);
-    }
-    
-    // Reset 按钮逻辑
+    if (yearInput) yearInput.addEventListener('change', applyFilters);
+
+    // ... (保留 Reset 按钮逻辑) ...
     const resetBtn = document.getElementById('btn-reset');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             document.querySelectorAll('select').forEach(s => s.value = 'all');
-            if (yearInput) yearInput.value = ''; // 清空输入框
+            if (yearInput) yearInput.value = '';
+            
+            // [NEW] 重置 Label 相关的状态
+            document.getElementById('sel-label-value').innerHTML = '<option value="all">Select a tag...</option>';
+            document.getElementById('sel-label-value').disabled = true;
+
             applyFilters();
         });
     }
@@ -280,33 +305,54 @@ function populateSelect(id, options) {
 }
 
 function applyFilters() {
-    // ... 前面的代码保持不变 (获取 inputs, parseYearInput 等) ...
-
     const yearInput = document.getElementById('sel-year');
     const countrySelect = document.getElementById('sel-country');
     const instSelect = document.getElementById('sel-inst');
+    
+    // [NEW] 获取 Label 相关的输入
+    const labelTypeSelect = document.getElementById('sel-label-type');
+    const labelValueSelect = document.getElementById('sel-label-value');
 
     const yearInputStr = yearInput ? yearInput.value : '';
     const country = countrySelect ? countrySelect.value : 'all';
     const inst = instSelect ? instSelect.value : 'all';
+    
+    // [NEW] 获取值
+    const labelType = labelTypeSelect ? labelTypeSelect.value : 'all';
+    const labelValue = labelValueSelect ? labelValueSelect.value : 'all';
 
     const selectedYears = parseYearInput(yearInputStr);
 
     const newColors = [];
     const newOpacities = [];
     const newSizes = [];
-    const isFiltering = (selectedYears !== null || country !== 'all' || inst !== 'all');
+    
+    // [MODIFIED] 判断是否正在过滤（加入 label 的判断）
+    const isFiltering = (selectedYears !== null || country !== 'all' || inst !== 'all' || (labelType !== 'all' && labelValue !== 'all'));
 
     plotData.forEach(d => {
         const matchYear = (selectedYears === null) || selectedYears.has(d.year);
         const matchCountry = country === 'all' || d.country === country;
         const matchInst = inst === 'all' || d.institution === inst;
 
-        // [NEW] 这里的逻辑是关键：
-        // 如果满足所有条件，isVisible 就是 true，否则就是 false
-        const isVisible = matchYear && matchCountry && matchInst;
+        // [NEW] Label 过滤逻辑
+        let matchLabel = true;
+        if (labelType !== 'all' && labelValue !== 'all') {
+            // 检查 d.labels 是否存在，以及 d.labels[labelType] 是否包含选中的值
+            // 数据结构: labels: { task: ["Registration", "Seg..."] }
+            if (d.labels && d.labels[labelType] && Array.isArray(d.labels[labelType])) {
+                if (!d.labels[labelType].includes(labelValue)) {
+                    matchLabel = false;
+                }
+            } else {
+                // 如果这篇文章没有这个类型的标签，直接视为不匹配
+                matchLabel = false;
+            }
+        }
+
+        // [MODIFIED] 综合判断
+        const isVisible = matchYear && matchCountry && matchInst && matchLabel;
         
-        // 我们把这个状态直接存到数据对象里，供 hover 时检查
         d.isHidden = !isVisible; 
 
         newColors.push(d.current_color || '#cccccc');
@@ -438,4 +484,44 @@ function updateDetails(record) {
             </a>
         </div>
     `;
+}
+
+
+// [NEW] 根据选择的 Label 类型（如 'task'），填充具体的值
+function updateLabelValueOptions(type) {
+    const valueSelect = document.getElementById('sel-label-value');
+    valueSelect.innerHTML = ''; // 清空
+
+    if (type === 'all') {
+        valueSelect.innerHTML = '<option value="all">Select a tag...</option>';
+        valueSelect.disabled = true;
+        return;
+    }
+
+    // 1. 收集所有该类型的标签
+    const allTags = new Set();
+    plotData.forEach(d => {
+        if (d.labels && d.labels[type] && Array.isArray(d.labels[type])) {
+            d.labels[type].forEach(tag => allTags.add(tag));
+        }
+    });
+
+    // 2. 排序并填充
+    const sortedTags = [...allTags].sort();
+    
+    // 复用你的 populateSelect，或者手动添加
+    // 为了确保第一个选项是 "All Tags"，我们手动写一下比较稳
+    const allOpt = document.createElement('option');
+    allOpt.value = 'all';
+    allOpt.textContent = 'All Tags';
+    valueSelect.appendChild(allOpt);
+
+    sortedTags.forEach(tag => {
+        const opt = document.createElement('option');
+        opt.value = tag;
+        opt.textContent = tag;
+        valueSelect.appendChild(opt);
+    });
+
+    valueSelect.disabled = false;
 }
