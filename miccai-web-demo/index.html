@@ -7,22 +7,6 @@
 
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
-
-    <script>
-        const PAGE_PASSWORD = "tonyhu123";
-
-        function checkPassword() {
-            const input = prompt("Please enter the password:");
-            if (input === PAGE_PASSWORD) {
-                document.getElementById("page-root").style.display = "flex";
-            } else {
-                alert("Wrong password.");
-                document.body.innerHTML = "";
-            }
-        }
-
-        window.onload = checkPassword;
-    </script>
 </head>
 <body>
 
