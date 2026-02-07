@@ -10,59 +10,56 @@
 </head>
 <body>
 
-    <!-- 🔒 外层包裹，不改你原有结构 -->
-    <div id="page-root" class="container" style="display: none;">
 
-        <div class="sidebar">
-            <h2>MICCAI Explorer</h2>
+    <div class="sidebar">
+        <h2>MICCAI Explorer</h2>
+        
+        <div class="control-section">
+            <h3>Color By</h3>
+            <select id="sel-assignment"></select>
+            <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
+        </div>
+        <hr>
+
+        <div class="filter-section">
+            <h3>Filters</h3>
+
+            <label>Year (e.g. 2015-2018, 2020):</label>
+            <input type="text" id="sel-year" placeholder="All Years">
+
+            <label>Country:</label>
+            <select id="sel-country">
+                <option value="all">All Countries</option>
+            </select>
             
-            <div class="control-section">
-                <h3>Color By</h3>
-                <select id="sel-assignment"></select>
-                <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
-            </div>
-            <hr>
+            <label>Institution:</label>
+            <select id="sel-inst">
+                <option value="all">All Institutions</option>
+            </select>
+            
+            <label>Label Category:</label>
+            <select id="sel-label-type">
+                <option value="all">Filter by Label...</option>
+            </select>
+            
+            <label>Specific Tag:</label>
+            <select id="sel-label-value" disabled>
+                <option value="all">Select a tag...</option>
+            </select>
 
-            <div class="filter-section">
-                <h3>Filters</h3>
-
-                <label>Year (e.g. 2015-2018, 2020):</label>
-                <input type="text" id="sel-year" placeholder="All Years">
-
-                <label>Country:</label>
-                <select id="sel-country">
-                    <option value="all">All Countries</option>
-                </select>
-                
-                <label>Institution:</label>
-                <select id="sel-inst">
-                    <option value="all">All Institutions</option>
-                </select>
-                
-                <label>Label Category:</label>
-                <select id="sel-label-type">
-                    <option value="all">Filter by Label...</option>
-                </select>
-                
-                <label>Specific Tag:</label>
-                <select id="sel-label-value" disabled>
-                    <option value="all">Select a tag...</option>
-                </select>
-
-                <button id="btn-reset">Reset Filters</button>
-            </div>
-
-            <hr>
-
-            <div class="details-section" id="details-box">
-                <h3>Paper Details</h3>
-                <p class="placeholder">Hover over a point to see details...</p>
-            </div>
+            <button id="btn-reset">Reset Filters</button>
         </div>
 
-        <div class="main-content">
-            <div id="chart"></div>
+        <hr>
+
+        <div class="details-section" id="details-box">
+            <h3>Paper Details</h3>
+            <p class="placeholder">Hover over a point to see details...</p>
         </div>
+    </div>
+
+    <div class="main-content">
+        <div id="chart"></div>
     </div>
 
     <script src="app.js"></script>
