@@ -10,39 +10,42 @@
 </head>
 <body>
 
+<div class="container">
 
+    <!-- ===== Sidebar ===== -->
     <div class="sidebar">
         <h2>MICCAI Explorer</h2>
-        
+
         <div class="control-section">
             <h3>Color By</h3>
             <select id="sel-assignment"></select>
-            <div id="color-legend" style="font-size:0.8em; color:#666; margin-top:5px;"></div>
+            <div id="color-legend"></div>
         </div>
+
         <hr>
 
         <div class="filter-section">
             <h3>Filters</h3>
 
-            <label>Year (e.g. 2015-2018, 2020):</label>
+            <label>Year (e.g. 2015-2018, 2020)</label>
             <input type="text" id="sel-year" placeholder="All Years">
 
-            <label>Country:</label>
+            <label>Country</label>
             <select id="sel-country">
                 <option value="all">All Countries</option>
             </select>
-            
-            <label>Institution:</label>
+
+            <label>Institution</label>
             <select id="sel-inst">
                 <option value="all">All Institutions</option>
             </select>
-            
-            <label>Label Category:</label>
+
+            <label>Label Category</label>
             <select id="sel-label-type">
                 <option value="all">Filter by Label...</option>
             </select>
-            
-            <label>Specific Tag:</label>
+
+            <label>Specific Tag</label>
             <select id="sel-label-value" disabled>
                 <option value="all">Select a tag...</option>
             </select>
@@ -58,10 +61,13 @@
         </div>
     </div>
 
+    <!-- ===== Main Content ===== -->
     <div class="main-content">
         <div id="chart"></div>
     </div>
 
-    <script src="app.js"></script>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
